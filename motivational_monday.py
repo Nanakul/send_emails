@@ -35,4 +35,7 @@ def send_email(random_quote):
 
 
 if '__name__' == '__main__':
+    random_quote = weekday_check()
+
     weekday_check()
+    send_email(random_quote)
