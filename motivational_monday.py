@@ -17,3 +17,9 @@ def weekday_check():
             all_quotes = q.readlines()
             random_quote = random.choice(all_quotes)
 
+    return random_quote
+
+
+if '__name__' == '__main__':
+    weekday_check()
+    
