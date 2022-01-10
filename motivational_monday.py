@@ -6,6 +6,8 @@ import random
 
 email = getpass.getpass('Email: ')
 password = getpass.getpass('Password: ')
+to_address = input('Email of recipient: ')
+subject = 'Motivational Monday!'
 
 now = dt.datetime.now()
 weekday = now.weekday()
@@ -20,10 +22,7 @@ def weekday_check():
     return random_quote
 
 
-def send_email(random_quote):
-
-    to_address = input('Email of recipient: ')
-    subject = 'Motivational Monday!'
+def send_email(_random_quote):
 
     with smtplib.SMTP('smtp.gmail.com', 587) as connection:
         connection.ehlo()
