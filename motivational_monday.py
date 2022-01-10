@@ -20,6 +20,19 @@ def weekday_check():
     return random_quote
 
 
+def send_email(random_quote):
+
+    to_address = input('Email of recipient: ')
+    subject = 'Motivational Monday!'
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+        connection.ehlo()
+        connection.starttls()
+        connection.login(email, password)
+        connection.sendmail(email,
+                            to_addrs=to_address,
+                            msg='Subject:' + subject + '\n' + random_quote)
+
+
 if '__name__' == '__main__':
     weekday_check()
-    
