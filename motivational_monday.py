@@ -2,7 +2,12 @@ import smtplib
 import getpass
 import datetime as dt
 import random
+import sqlite3 as db
 
+# NOTE: To use this script, you must set up Two-Factor Authentication and
+# create an app password on Gmail.
+
+# Log in with Gmail
 email = getpass.getpass('Email: ')
 password = getpass.getpass('Password: ')
 to_address = input('Email of recipient: ')
@@ -10,6 +15,13 @@ subject = 'Motivational Monday!'
 
 now = dt.datetime.now()
 weekday = now.weekday()
+
+
+def db_connect():
+    db_conn = db.connect('Emails.db')
+    cursor = db_conn.cursor()
+    cursor.execute("""CREATE TABLE if NOT EXISTS Emails (
+                    """)
 
 
 def weekday_check() -> str:
