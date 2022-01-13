@@ -8,20 +8,18 @@ import sqlite3 as db
 # create an app password on Gmail.
 
 # Log in with Gmail
-email = getpass.getpass('Email: ')
-password = getpass.getpass('Password: ')
-to_address = input('Email of recipient: ')
+my_email = getpass.getpass('Email: ')
+my_password = getpass.getpass('Password: ')
 subject = 'Motivational Monday!'
 
 now = dt.datetime.now()
 weekday = now.weekday()
 
-
-def db_connect():
-    db_conn = db.connect('Emails.db')
-    cursor = db_conn.cursor()
-    cursor.execute("""CREATE TABLE if NOT EXISTS Emails (
-                    """)
+# Connect the database
+db_conn = db.connect('Emails.db')
+cursor = db_conn.cursor()
+cursor.execute("""CREATE TABLE if NOT EXISTS Emails (email VARCHAR)""")
+db_conn.commit()
 
 
 def weekday_check() -> str:
@@ -35,19 +33,30 @@ def weekday_check() -> str:
         pass
 
 
-def send_email(_random_quote):
+def send_email(_random_quote) -> str:
+
+    to_address = input('Email of recipient: ')
 
     with smtplib.SMTP('smtp.gmail.com', 587) as connection:
         connection.ehlo()
         connection.starttls()
-        connection.login(email, password)
+        connection.login(my_email, my_password)
         connection.sendmail(email,
                             to_addrs=to_address,
                             msg=('Subject:' + subject + '\n' + _random_quote).encode('ascii', 'ignore'))
 
+    return to_address
+
+
+def db_add_email(_to_address):
+    cursor.execute('INSERT INTO Emails(email) VALUES (?)', str(_to_address))
+    db_conn.commit()
+
 
 if __name__ == '__main__':
     random_quote = weekday_check()
+    email = send_email(random_quote)
 
     weekday_check()
     send_email(random_quote)
+    db_add_email(email)
