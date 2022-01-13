@@ -136,4 +136,7 @@ dmypy.json
 .idea/modules.xml
 .idea/send_emails.iml
 .idea/vcs.xml
+.idea/csv-plugin.xml
 Emails.db
+birthdays.csv
+bday_letter1.txt
