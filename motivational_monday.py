@@ -36,13 +36,18 @@ def weekday_check() -> str:
 
 def send_email(_random_quote):
 
-    with smtplib.SMTP('smtp.gmail.com', 587) as connection:
-        connection.ehlo()
-        connection.starttls()
-        connection.login(my_email, my_password)
-        connection.sendmail(my_email,
-                            to_addrs=to_address,
-                            msg=('Subject:' + subject + '\n' + _random_quote).encode('ascii', 'ignore'))
+    # Get all emails from database
+    cursor.execute('SELECT * FROM Emails')
+    db_emails = cursor.fetchall()
+
+    for db_email in db_emails:
+        with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+            connection.ehlo()
+            connection.starttls()
+            connection.login(my_email, my_password)
+            connection.sendmail(my_email,
+                                to_addrs=db_email,
+                                msg=('Subject:' + subject + '\n' + _random_quote).encode('ascii', 'ignore'))
 
 
 def db_add_email(_to_address):
@@ -53,6 +58,6 @@ def db_add_email(_to_address):
 if __name__ == '__main__':
     random_quote = weekday_check()
 
+    db_add_email(to_address)
     weekday_check()
     send_email(random_quote)
-    db_add_email(to_address)
